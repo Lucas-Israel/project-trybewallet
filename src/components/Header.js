@@ -12,18 +12,22 @@ class Header extends Component {
     const { gasto, coin } = this.state;
     const { email } = this.props;
     return (
-      <div>
+      <div className="header">
         <div data-testid="email-field">
           Usuario:
           {' '}
           {email}
         </div>
-        <div data-testid="total-field">
-          Total de gastos:
-          {' '}
-          { gasto }
+        <div className="valorDeGasto">
+          <div data-testid="total-field">
+            Total de gastos:
+            {' '}
+            { gasto }
+          </div>
+          <div id="header-currency-field" data-testid="header-currency-field">
+            {coin}
+          </div>
         </div>
-        <div data-testid="header-currency-field">{ coin }</div>
       </div>
     );
   }
