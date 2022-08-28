@@ -5,9 +5,6 @@ import PropTypes from 'prop-types';
 class Table extends Component {
   render() {
     const { expenses } = this.props;
-    const abc = expenses
-      .map(({ currency, description, method, tag, value, exchangeRates }) => exchangeRates);
-    console.log(abc);
     return (
       <table style={ { width: '100%' } }>
         <thead>
