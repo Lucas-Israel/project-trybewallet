@@ -2,6 +2,7 @@ export const ENVIAR = 'ENVIAREMAIL';
 export const REQUEST_API = 'REQUEST_API';
 export const GET_COIN = 'GET_COIN';
 export const EXCHANGE_RATES_SUBMIT = 'EXCHANGE_RATES_SUBMIT';
+export const REMOVE_EXPENSE = 'REMOVE_EXPENSE';
 
 export const sendEmail = (payload) => ({ type: ENVIAR, payload });
 
@@ -38,3 +39,5 @@ export const walletformsubmit = (state) => async (dispatch) => {
     errorToConsole(error);
   }
 };
+
+export const removeExpenseByID = (payload) => ({ type: REMOVE_EXPENSE, payload });

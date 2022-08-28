@@ -10,6 +10,7 @@ class Header extends Component {
   render() {
     const { coin } = this.state;
     const { email, expenses } = this.props;
+    const zero2Decimais = 0.001;
     const soma = expenses.length > 0 ? expenses
       .map(({
         currency,
@@ -27,7 +28,7 @@ class Header extends Component {
           Total de gastos:
           {' '}
           <div data-testid="total-field">
-            {soma}
+            {soma === 0 ? zero2Decimais.toFixed(2) : soma}
           </div>
           <div id="header-currency-field" data-testid="header-currency-field">
             {coin}

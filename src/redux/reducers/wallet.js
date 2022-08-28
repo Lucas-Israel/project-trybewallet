@@ -2,6 +2,7 @@ import {
   REQUEST_API,
   GET_COIN,
   EXCHANGE_RATES_SUBMIT,
+  REMOVE_EXPENSE,
 } from '../actions/index';
 
 const INITIAL_STATE = {
@@ -31,6 +32,13 @@ const wallet = (state = INITIAL_STATE, { type, payload }) => {
       expenses: [
         ...state.expenses,
         payload,
+      ],
+    };
+  case REMOVE_EXPENSE:
+    return {
+      ...state,
+      expenses: [
+        ...state.expenses.filter(({ id }) => id !== payload),
       ],
     };
   default:
