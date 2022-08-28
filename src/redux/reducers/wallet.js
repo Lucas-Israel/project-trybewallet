@@ -1,4 +1,8 @@
-import { REQUEST_API, GET_COIN, WALLETFORM_SUBMIT } from '../actions/index';
+import {
+  REQUEST_API,
+  GET_COIN,
+  EXCHANGE_RATES_SUBMIT,
+} from '../actions/index';
 
 const INITIAL_STATE = {
   currencies: [], // array de string
@@ -21,12 +25,13 @@ const wallet = (state = INITIAL_STATE, { type, payload }) => {
       currencies: Object.keys(payload).filter((name) => name !== 'USDT'),
       loading: false,
     };
-  case WALLETFORM_SUBMIT:
+  case EXCHANGE_RATES_SUBMIT:
     return {
       ...state,
-      expenses: [...Object.entries(payload).map((item) => ({
-        [item[0]]: item[1],
-      }))],
+      expenses: [
+        ...state.expenses,
+        payload,
+      ],
     };
   default:
     return state;
