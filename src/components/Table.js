@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { removeExpenseByID } from '../redux/actions/index';
+import { removeExpenseByID, editExpenseByID } from '../redux/actions/index';
 
 class Table extends Component {
   render() {
@@ -17,7 +17,6 @@ class Table extends Component {
             <th>Tag</th>
             <th>Câmbio utilizado</th>
             <th>Valor convertido</th>
-            {/* <th>Total convertido</th> */}
             <th>Moeda de conversão</th>
             <th>Editar/Excluir</th>
           </tr>
@@ -41,6 +40,13 @@ class Table extends Component {
                 </td>
                 <td>Real</td>
                 <td>
+                  <button
+                    type="button"
+                    data-testid="edit-btn"
+                    onClick={ () => dispatch(editExpenseByID(id)) }
+                  >
+                    Editar
+                  </button>
                   <button
                     type="button"
                     data-testid="delete-btn"

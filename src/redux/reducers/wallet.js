@@ -3,6 +3,8 @@ import {
   GET_COIN,
   EXCHANGE_RATES_SUBMIT,
   REMOVE_EXPENSE,
+  EDIT_EXPENSE,
+  EDITED_TO_STORE,
 } from '../actions/index';
 
 const INITIAL_STATE = {
@@ -40,6 +42,22 @@ const wallet = (state = INITIAL_STATE, { type, payload }) => {
       expenses: [
         ...state.expenses.filter(({ id }) => id !== payload),
       ],
+    };
+  case EDIT_EXPENSE:
+    return {
+      ...state,
+      editor: true,
+      idToEdit: payload,
+    };
+  case EDITED_TO_STORE:
+    payload.id = state.idToEdit;
+    return {
+      ...state,
+      expenses: [
+        ...state.expenses
+          .map((expense) => (expense.id === state.idToEdit ? payload : expense)),
+      ],
+      editor: false,
     };
   default:
     return state;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchAPI, walletformsubmit } from '../redux/actions';
+import { fetchAPI, walletformsubmit, editedExpenseToStore } from '../redux/actions';
 
 class WalletForm extends Component {
   state = {
@@ -25,16 +25,21 @@ class WalletForm extends Component {
     });
   };
 
-  submitHandler = () => {
-    const { dispatch } = this.props;
+  submitHndl = () => {
+    const { dispatch, editor } = this.props;
     const { id } = this.state;
-    this.setState({ id: id + 1 });
-    dispatch(walletformsubmit(this.state));
+    if (editor === false) {
+      this.setState({ id: id + 1 });
+      dispatch(walletformsubmit(this.state));
+    }
+    if (editor === true) {
+      dispatch(editedExpenseToStore(this.state));
+    }
     this.setState({ value: '', description: '' });
   };
 
   render() {
-    const { currencies } = this.props;
+    const { currencies, editor } = this.props;
     const {
       value,
       description,
@@ -43,7 +48,7 @@ class WalletForm extends Component {
       tag,
     } = this.state;
     return (
-      <form className="form">
+      <form className="form" style={ editor ? { backgroundColor: 'red' } : { } }>
         <label htmlFor="value-input">
           Valor:
           {' '}
@@ -111,7 +116,12 @@ class WalletForm extends Component {
             <option>Saúde</option>
           </select>
         </label>
-        <button type="button" onClick={ this.submitHandler }>Adicionar despesa</button>
+        <button
+          type="button"
+          onClick={ this.submitHndl }
+        >
+          {editor === false ? 'Adicionar despesa' : 'Editar despesa'}
+        </button>
       </form>
     );
   }
@@ -122,11 +132,13 @@ WalletForm.propTypes = {
   currencies: PropTypes.arrayOf(
     PropTypes.string,
   ).isRequired,
+  editor: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = ({ wallet: { currencies, expenses } }) => ({
+const mapStateToProps = ({ wallet: { editor, currencies, expenses } }) => ({
   currencies,
   expenses,
+  editor,
 });
 
 export default connect(mapStateToProps)(WalletForm);
