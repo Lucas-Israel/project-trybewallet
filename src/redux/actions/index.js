@@ -14,55 +14,39 @@ const requestAPI = () => ({ type: REQUEST_API });
 
 const getCoin = (payload) => ({ type: GET_COIN, payload });
 
-const errorToConsole = (message) => console.log(message);
-
 export const fetchAPI = () => async (dispatch) => {
-  try {
-    dispatch(requestAPI());
-    const response = await fetch(fetchURL);
-    const json = await response.json();
-    await dispatch(getCoin(json));
-  } catch (error) {
-    errorToConsole(error);
-  }
+  dispatch(requestAPI());
+  const response = await fetch(fetchURL);
+  const json = await response.json();
+  await dispatch(getCoin(json));
 };
 
 export const walletformsubmit = (state) => async (dispatch) => {
-  try {
-    const response = await fetch(fetchURL);
-    const json = await response.json();
-    delete json.USDT;
-    await dispatch({
-      type: EXCHANGE_RATES_SUBMIT,
-      payload: {
-        ...state,
-        exchangeRates: json,
-      },
-    });
-  } catch (error) {
-    errorToConsole(error);
-  }
+  const response = await fetch(fetchURL);
+  const json = await response.json();
+  delete json.USDT;
+  await dispatch({
+    type: EXCHANGE_RATES_SUBMIT,
+    payload: {
+      ...state,
+      exchangeRates: json,
+    },
+  });
 };
 
 export const removeExpenseByID = (payload) => ({ type: REMOVE_EXPENSE, payload });
 
 export const editExpenseByID = (payload) => ({ type: EDIT_EXPENSE, payload });
 
-// export const editedExpenseToStore = (payload) => ({ type: EDITED_TO_STORE, payload });
-
 export const editedExpenseToStore = (state) => async (dispatch) => {
-  try {
-    const response = await fetch(fetchURL);
-    const json = await response.json();
-    delete json.USDT;
-    await dispatch({
-      type: EDITED_TO_STORE,
-      payload: {
-        ...state,
-        exchangeRates: json,
-      },
-    });
-  } catch (error) {
-    errorToConsole(error);
-  }
+  const response = await fetch(fetchURL);
+  const json = await response.json();
+  delete json.USDT;
+  await dispatch({
+    type: EDITED_TO_STORE,
+    payload: {
+      ...state,
+      exchangeRates: json,
+    },
+  });
 };

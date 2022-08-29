@@ -46,7 +46,7 @@ const wallet = (state = INITIAL_STATE, { type, payload }) => {
   case EDIT_EXPENSE:
     return {
       ...state,
-      editor: true,
+      editor: !state.editor,
       idToEdit: payload,
     };
   case EDITED_TO_STORE:
