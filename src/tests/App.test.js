@@ -10,6 +10,7 @@ import storeMockWrong from './helpers/storeMockWithError';
 const valueInput = 'value-input';
 const descriptionInput = 'description-input';
 const totalFieldvalue = 'total-field';
+const expenseEdit = 'Editar despesa';
 
 describe('Testa a aplicação', () => {
   describe('Teste da pagina de login', () => {
@@ -30,7 +31,7 @@ describe('Testa a aplicação', () => {
 
       history.push('/abc');
 
-      const notfound = screen.getByText('404 Page not found');
+      const notfound = screen.getByText('Page not found');
 
       expect(notfound).toBeInTheDocument();
     });
@@ -128,8 +129,7 @@ describe('Testa a aplicação', () => {
     test('Testando os botões de editar e excluir da tabela', async () => {
       const { store } = renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'], initialState: storeMock });
 
-      const editBtn = screen.getByTestId('edit-btn');
-      const delBtn = screen.getByTestId('delete-btn');
+      let editBtn = screen.getByTestId('edit-btn');
 
       userEvent.click(editBtn);
 
@@ -137,49 +137,80 @@ describe('Testa a aplicação', () => {
 
       expect(editor).toBe(true);
 
+      editBtn = screen.getByTestId('edit-btn');
+
       userEvent.click(editBtn);
 
       ({ editor } = store.getState().wallet);
 
-      expect(editor).toBe(false);
+      await waitFor(() => expect(editor).toBe(false));
+
+      editBtn = screen.getByTestId('edit-btn');
 
       userEvent.click(editBtn);
 
-      const editarDespesa = screen.getByRole('button', { name: 'Editar despesa' });
+      const editorTrue = await waitFor(() => store.getState().wallet.editor);
+
+      expect(editorTrue).toBe(true);
+
+      const valInput = screen.getByTestId(valueInput);
+
+      userEvent.type(valInput, '4');
+
+      const editarDespesa = screen.getByRole('button', { name: expenseEdit });
 
       userEvent.click(editarDespesa);
 
-      await waitFor(() => expect(store.getState().wallet.expenses[0].value).toBe(''));
+      await waitFor(() => {
+        expect(store.getState().wallet.expenses[0].value).toBe('1234');
+      });
+
+      const delBtn = screen.getByTestId('delete-btn');
 
       userEvent.click(delBtn);
 
-      const { expenses } = store.getState().wallet;
-
-      expect(expenses.length).toBe(0);
+      expect(store.getState().wallet.expenses.length).toBe(0);
     });
 
     test('Testando caso clicar no botão editar despesas depois da despesa ser deletada ', async () => {
       const { store } = renderWithRouterAndRedux(<App />, { initialEntries: ['/carteira'], initialState: storeMockWrong });
 
-      const editBtn = screen.getAllByTestId('edit-btn');
+      let editBtn = screen.getAllByTestId('edit-btn');
 
       userEvent.click(editBtn[1]);
 
       await waitFor(() => expect(store.getState().wallet.editor).toBe(true));
 
-      const inputValue = screen.getByTestId(valueInput);
+      let inputValue = screen.getByTestId(valueInput);
 
       userEvent.type(inputValue, '123');
 
-      const editarDespesa = screen.getByRole('button', { name: 'Editar despesa' });
+      let editarDespesa = screen.getByRole('button', { name: expenseEdit });
 
       userEvent.click(editarDespesa);
 
-      await waitFor(() => expect(store.getState().wallet.expenses[1].value).toBe('123'));
+      await waitFor(() => expect(store.getState().wallet.expenses[1].value).toBe('abc123'));
 
       const total = screen.getByTestId(totalFieldvalue);
 
-      expect(total.innerHTML).toBe('1094.66');
+      expect(total.innerHTML).toBe('NaN');
+
+      editBtn = screen.getAllByTestId('edit-btn');
+
+      userEvent.click(editBtn[1]);
+
+      await waitFor(() => expect(store.getState().wallet.editor).toBe(true));
+
+      inputValue = screen.getByTestId(valueInput);
+
+      inputValue.setSelectionRange(0, 6);
+      userEvent.type(inputValue, `{backspace}${0}`);
+
+      editarDespesa = screen.getByRole('button', { name: expenseEdit });
+
+      userEvent.click(editarDespesa);
+
+      await waitFor(() => expect(store.getState().wallet.expenses[1].value).toBe('0'));
     });
   });
 });

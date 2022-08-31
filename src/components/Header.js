@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import trybeicon from '../images/trybeIcon.png';
 
 class Header extends Component {
   state = {
@@ -18,16 +19,36 @@ class Header extends Component {
         exchangeRates }) => (+value) * exchangeRates[currency].ask)
       .reduce((a, b) => a + b).toFixed(2) : 0;
     return (
-      <div className="header">
-        <div data-testid="email-field">
-          Usuario:
-          {' '}
-          {email}
+      <div
+        className="d-flex d-flex bg-gradient
+        justify-content-between pt-1 pb-1
+        align-items-center"
+        style={ { backgroundColor: 'rgb(210, 210, 210)' } }
+      >
+        <div className="d-flex align-items-center">
+          <img
+            src={ trybeicon }
+            alt="Trybe Icon"
+            className=""
+            style={ { height: '40px', paddingLeft: '20px', paddingRight: '40px' } }
+          />
+          <div
+            data-testid="email-field"
+            style={ { paddingLeft: '80px', fontWeight: 'bold' } }
+            className="text-dark d-flex"
+          >
+            <div className="me-2">
+              Usuario:
+            </div>
+            {email}
+          </div>
         </div>
-        <div className="valorDeGasto">
+        <div
+          className="d-flex text-dark"
+          style={ { paddingRight: '20px', fontWeight: 'bold' } }
+        >
           Total de gastos:
-          {' '}
-          <div data-testid="total-field">
+          <div data-testid="total-field" style={ { marginLeft: '10px' } }>
             {soma === 0 ? zero2Decimais.toFixed(2) : soma}
           </div>
           <div id="header-currency-field" data-testid="header-currency-field">

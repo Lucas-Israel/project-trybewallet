@@ -8,10 +8,16 @@ class Wallet extends React.Component {
   render() {
     return (
       <>
-        <Header />
-        <WalletForm />
+        <div className="fixed-top">
+          <Header />
+          <WalletForm />
+        </div>
         <br />
-        <Table />
+        <div
+          style={ { margin: '100px 0 0 0' } }
+        >
+          <Table />
+        </div>
       </>
     );
   }

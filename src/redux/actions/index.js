@@ -5,6 +5,9 @@ export const EXCHANGE_RATES_SUBMIT = 'EXCHANGE_RATES_SUBMIT';
 export const REMOVE_EXPENSE = 'REMOVE_EXPENSE';
 export const EDIT_EXPENSE = 'EDIT_EXPENSE';
 export const EDITED_TO_STORE = 'EDITED_TO_STORE';
+export const STORE_TO_FORM = 'STORE_TO_FORM';
+export const CANCEL = 'CANCEL';
+export const TURN_OFF_CANCEL = 'TURN_OFF_CANCEL';
 
 const fetchURL = 'https://economia.awesomeapi.com.br/json/all';
 
@@ -50,3 +53,9 @@ export const editedExpenseToStore = (state) => async (dispatch) => {
     },
   });
 };
+
+export const turnOffStoreToForm = { type: STORE_TO_FORM };
+
+export const cancelar = { type: CANCEL };
+
+export const turnOffCancel = { type: TURN_OFF_CANCEL };

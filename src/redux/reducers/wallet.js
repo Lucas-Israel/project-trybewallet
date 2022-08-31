@@ -5,6 +5,9 @@ import {
   REMOVE_EXPENSE,
   EDIT_EXPENSE,
   EDITED_TO_STORE,
+  STORE_TO_FORM,
+  CANCEL,
+  TURN_OFF_CANCEL,
 } from '../actions/index';
 
 const INITIAL_STATE = {
@@ -13,15 +16,14 @@ const INITIAL_STATE = {
   editor: false, // valor booleano que indica de uma despesa está sendo editada
   idToEdit: 0, // valor numérico que armazena o id da despesa que esta sendo editada
   loading: false,
+  storeToForm: false,
+  cancel: false,
 };
 
 const wallet = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
   case REQUEST_API:
-    return {
-      ...state,
-      loading: true,
-    };
+    return { ...state, loading: true };
   case GET_COIN:
     return {
       ...state,
@@ -48,9 +50,9 @@ const wallet = (state = INITIAL_STATE, { type, payload }) => {
       ...state,
       editor: !state.editor,
       idToEdit: payload,
+      storeToForm: true,
     };
   case EDITED_TO_STORE:
-    payload.id = state.idToEdit;
     return {
       ...state,
       expenses: [
@@ -59,6 +61,9 @@ const wallet = (state = INITIAL_STATE, { type, payload }) => {
       ],
       editor: false,
     };
+  case STORE_TO_FORM: return { ...state, storeToForm: false };
+  case CANCEL: return { ...state, cancel: true, editor: false };
+  case TURN_OFF_CANCEL: return { ...state, cancel: false };
   default:
     return state;
   }
